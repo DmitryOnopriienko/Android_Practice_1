@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/first_task_calculator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonBackToMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="8dp"
+            android:text="Повернутися до меню" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="H, %" />
+
+        <EditText
+            android:id="@+id/editTextH"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="H, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="C, %" />
+
+        <EditText
+            android:id="@+id/editTextC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="C, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="O, %" />
+
+        <EditText
+            android:id="@+id/editTextO"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="O, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="S, %" />
+
+        <EditText
+            android:id="@+id/editTextS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="S, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="N, %" />
+
+        <EditText
+            android:id="@+id/editTextN"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="N, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="A, %" />
+
+        <EditText
+            android:id="@+id/editTextA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="A, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="W, %" />
+
+        <EditText
+            android:id="@+id/editTextW"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="W, %"
+            android:inputType="numberDecimal"
+            android:text="0.0" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonCalculateDry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingHorizontal="8dp"
+        android:text="Склад сухої маси" />
+
+    <Button
+        android:id="@+id/buttonCalculateFlammable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingHorizontal="8dp"
+        android:text="Склад горючої маси" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:text="Результат: " />
+
+    <TextView
+        android:id="@+id/textViewResultH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingLeft="8dp"
+        android:text="H, %: " />
+
+    <TextView
+        android:id="@+id/textViewResultC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingLeft="8dp"
+        android:text="C, %: " />
+
+    <TextView
+        android:id="@+id/textViewResultO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingLeft="8dp"
+        android:text="O, %: " />
+
+    <TextView
+        android:id="@+id/textViewResultS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingLeft="8dp"
+        android:text="S, %: " />
+
+    <TextView
+        android:id="@+id/textViewResultN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingLeft="8dp"
+        android:text="N, %: " />
+
+    <TextView
+        android:id="@+id/textViewResultA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingLeft="8dp"
+        android:text="A, %: " />
+
+    <Button
+        android:id="@+id/buttonCalculateLowestHeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:text="Обчислити значення нижчої теплоти сгорання" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="8dp"
+        android:text="Результат для: " />
+
+    <TextView
+        android:id="@+id/textViewResultLowHeatWorking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="8dp"
+        android:text="Робочої маси, МДж/кг: " />
+
+    <TextView
+        android:id="@+id/textViewResultLowHeatDry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="8dp"
+        android:text="Сухої маси, МДж/кг: " />
+
+    <TextView
+        android:id="@+id/textViewResultLowHeatFlammable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="8dp"
+        android:text="Горючої маси, МДж/кг: " />
+
+</LinearLayout>
