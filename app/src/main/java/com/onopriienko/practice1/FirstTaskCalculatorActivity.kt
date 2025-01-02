@@ -193,8 +193,8 @@ class FirstTaskCalculatorActivity : AppCompatActivity() {
 
         const val KILOS_IN_MEGA: Double = 1000.0
 
-        const val LOWEST_HEAT_WORKING_RESULT_TEMPLATE = "Робочої маси, кДж/кг: %.4f"
-        const val LOWEST_HEAT_DRY_RESULT_TEMPLATE = "Сухої маси, кДж/кг: %.4f"
-        const val LOWEST_HEAT_FLAMMABLE_RESULT_TEMPLATE = "Горючої маси, кДж/кг: %.4f"
+        const val LOWEST_HEAT_WORKING_RESULT_TEMPLATE = "Робочої маси, МДж/кг: %.4f"
+        const val LOWEST_HEAT_DRY_RESULT_TEMPLATE = "Сухої маси, МДж/кг: %.4f"
+        const val LOWEST_HEAT_FLAMMABLE_RESULT_TEMPLATE = "Горючої маси, МДж/кг: %.4f"
     }
 }
