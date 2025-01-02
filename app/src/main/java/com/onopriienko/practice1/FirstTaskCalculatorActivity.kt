@@ -11,6 +11,27 @@ import androidx.core.view.WindowInsetsCompat
 import java.util.Locale
 
 class FirstTaskCalculatorActivity : AppCompatActivity() {
+
+    private lateinit var editTextHydrogen: EditText
+    private lateinit var editTextOxygen: EditText
+    private lateinit var editTextCarbon: EditText
+    private lateinit var editTextNitrogen: EditText
+    private lateinit var editTextSulphur: EditText
+    private lateinit var editTextWetness: EditText
+    private lateinit var editTextAsh: EditText
+
+    private lateinit var textViewHydrogen: TextView
+    private lateinit var textViewOxygen: TextView
+    private lateinit var textViewCarbon: TextView
+    private lateinit var textViewNitrogen: TextView
+    private lateinit var textViewSulphur: TextView
+    private lateinit var textViewAsh: TextView
+
+    private lateinit var textViewResultLowHeatWorking: TextView
+    private lateinit var textViewResultLowHeatDry: TextView
+    private lateinit var textViewResultLowHeatFlammable: TextView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -20,133 +41,119 @@ class FirstTaskCalculatorActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         findViewById<Button>(R.id.buttonBackToMenu).setOnClickListener { finish() }
 
-        val buttonCalculateDry = findViewById<Button>(R.id.buttonCalculateDry)
-        val buttonCalculateFlammable = findViewById<Button>(R.id.buttonCalculateFlammable)
-        val buttonCalculateLowestHeat = findViewById<Button>(R.id.buttonCalculateLowestHeat)
+        bindViews()
 
-        val editTextHydrogen = findViewById<EditText>(R.id.editTextH)
-        val editTextOxygen = findViewById<EditText>(R.id.editTextO)
-        val editTextCarbon = findViewById<EditText>(R.id.editTextC)
-        val editTextNitrogen = findViewById<EditText>(R.id.editTextN)
-        val editTextSulphur = findViewById<EditText>(R.id.editTextS)
-        val editTextWetness = findViewById<EditText>(R.id.editTextW)
-        val editTextAsh = findViewById<EditText>(R.id.editTextA)
-
-        val textViewHydrogen = findViewById<TextView>(R.id.textViewResultH)
-        val textViewOxygen = findViewById<TextView>(R.id.textViewResultO)
-        val textViewCarbon = findViewById<TextView>(R.id.textViewResultC)
-        val textViewNitrogen = findViewById<TextView>(R.id.textViewResultN)
-        val textViewSulphur = findViewById<TextView>(R.id.textViewResultS)
-        val textViewAsh = findViewById<TextView>(R.id.textViewResultA)
-
-        val textViewResultLowHeatWorking = findViewById<TextView>(R.id.textViewResultLowHeatWorking)
-        val textViewResultLowHeatDry = findViewById<TextView>(R.id.textViewResultLowHeatDry)
-        val textViewResultLowHeatFlammable =
-            findViewById<TextView>(R.id.textViewResultLowHeatFlammable)
-
-        buttonCalculateDry.setOnClickListener {
-            val h = editTextHydrogen.getDouble()
-            val o = editTextOxygen.getDouble()
-            val c = editTextCarbon.getDouble()
-            val n = editTextNitrogen.getDouble()
-            val s = editTextSulphur.getDouble()
-            val w = editTextWetness.getDouble()
-            val a = editTextAsh.getDouble()
-            val k = calculateDryCoefficient(w)
-
-            val newH = h * k
-            val newO = o * k
-            val newC = c * k
-            val newN = n * k
-            val newS = s * k
-            val newA = a * k
-
-            textViewHydrogen.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, HYDROGEN_RESULT, newH)
-            textViewOxygen.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, OXYGEN_RESULT, newO)
-            textViewCarbon.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, CARBON_RESULT, newC)
-            textViewNitrogen.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, NITROGEN_RESULT, newN)
-            textViewSulphur.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, SULPHUR_RESULT, newS)
-            textViewAsh.text = String.format(Locale.getDefault(), RESULT_TEMPLATE, ASH_RESULT, newA)
+        findViewById<Button>(R.id.buttonCalculateDry).setOnClickListener {
+            calculate(CalculationType.DRY)
         }
-
-        buttonCalculateFlammable.setOnClickListener {
-            val h = editTextHydrogen.getDouble()
-            val o = editTextOxygen.getDouble()
-            val c = editTextCarbon.getDouble()
-            val n = editTextNitrogen.getDouble()
-            val s = editTextSulphur.getDouble()
-            val w = editTextWetness.getDouble()
-            val a = editTextAsh.getDouble()
-            val k = calculateFlammableCoefficient(wetness = w, ash = a)
-
-            val newH = h * k
-            val newO = o * k
-            val newC = c * k
-            val newN = n * k
-            val newS = s * k
-
-            textViewHydrogen.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, HYDROGEN_RESULT, newH)
-            textViewOxygen.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, OXYGEN_RESULT, newO)
-            textViewCarbon.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, CARBON_RESULT, newC)
-            textViewNitrogen.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, NITROGEN_RESULT, newN)
-            textViewSulphur.text =
-                String.format(Locale.getDefault(), RESULT_TEMPLATE, SULPHUR_RESULT, newS)
-            textViewAsh.text = ""
+        findViewById<Button>(R.id.buttonCalculateFlammable).setOnClickListener {
+            calculate(CalculationType.FLAMMABLE)
         }
-
-        buttonCalculateLowestHeat.setOnClickListener {
-            val h = editTextHydrogen.getDouble()
-            val o = editTextOxygen.getDouble()
-            val c = editTextCarbon.getDouble()
-            val s = editTextSulphur.getDouble()
-            val w = editTextWetness.getDouble()
-            val a = editTextAsh.getDouble()
-            val lowestHeatForWorkingMass = calculateLowestHeatForWorkingMass(
-                c = c,
-                h = h,
-                o = o,
-                s = s,
-                w = w,
-            )
-
-            val lowestHeatForDryMass =
-                (lowestHeatForWorkingMass + WETNESS_MULTIPLIER_FOR_HEAT * w) * (100 / (100 - w))
-            val lowestHeatForFlammableMass =
-                (lowestHeatForWorkingMass + WETNESS_MULTIPLIER_FOR_HEAT * w) * (100 / (100 - w - a))
-
-            textViewResultLowHeatWorking.text = String.format(
-                Locale.getDefault(),
-                LOWEST_HEAT_WORKING_RESULT_TEMPLATE,
-                convertKilosToMega(lowestHeatForWorkingMass),
-            )
-            textViewResultLowHeatDry.text = String.format(
-                Locale.getDefault(),
-                LOWEST_HEAT_DRY_RESULT_TEMPLATE,
-                convertKilosToMega(lowestHeatForDryMass),
-            )
-            textViewResultLowHeatFlammable.text = String.format(
-                Locale.getDefault(),
-                LOWEST_HEAT_FLAMMABLE_RESULT_TEMPLATE,
-                convertKilosToMega(lowestHeatForFlammableMass),
-            )
+        findViewById<Button>(R.id.buttonCalculateLowestHeat).setOnClickListener {
+            calculateLowestHeat()
         }
     }
 
-    private fun EditText.getDouble(): Double = this.text.toString().trim().toDoubleOrNull() ?: 0.0
+    private fun bindViews() {
+        editTextHydrogen = findViewById(R.id.editTextH)
+        editTextOxygen = findViewById(R.id.editTextO)
+        editTextCarbon = findViewById(R.id.editTextC)
+        editTextNitrogen = findViewById(R.id.editTextN)
+        editTextSulphur = findViewById(R.id.editTextS)
+        editTextWetness = findViewById(R.id.editTextW)
+        editTextAsh = findViewById(R.id.editTextA)
 
-    private fun calculateDryCoefficient(wetness: Double): Double =
-        100 / (100 - wetness)
+        textViewHydrogen = findViewById(R.id.textViewResultH)
+        textViewOxygen = findViewById(R.id.textViewResultO)
+        textViewCarbon = findViewById(R.id.textViewResultC)
+        textViewNitrogen = findViewById(R.id.textViewResultN)
+        textViewSulphur = findViewById(R.id.textViewResultS)
+        textViewAsh = findViewById(R.id.textViewResultA)
+
+        textViewResultLowHeatWorking = findViewById(R.id.textViewResultLowHeatWorking)
+        textViewResultLowHeatDry = findViewById(R.id.textViewResultLowHeatDry)
+        textViewResultLowHeatFlammable = findViewById(R.id.textViewResultLowHeatFlammable)
+    }
+
+    private enum class CalculationType {
+        DRY,
+        FLAMMABLE,
+    }
+
+    private fun calculate(type: CalculationType) {
+        val h = editTextHydrogen.getDouble()
+        val o = editTextOxygen.getDouble()
+        val c = editTextCarbon.getDouble()
+        val n = editTextNitrogen.getDouble()
+        val s = editTextSulphur.getDouble()
+        val w = editTextWetness.getDouble()
+        val a = editTextAsh.getDouble()
+
+        val k = when (type) {
+            CalculationType.DRY -> calculateDryCoefficient(w)
+            CalculationType.FLAMMABLE -> calculateFlammableCoefficient(w, a)
+        }
+
+        val newH = h * k
+        val newO = o * k
+        val newC = c * k
+        val newN = n * k
+        val newS = s * k
+
+        textViewHydrogen.text = formattedResult(HYDROGEN_RESULT, newH)
+        textViewOxygen.text = formattedResult(OXYGEN_RESULT, newO)
+        textViewCarbon.text = formattedResult(CARBON_RESULT, newC)
+        textViewNitrogen.text = formattedResult(NITROGEN_RESULT, newN)
+        textViewSulphur.text = formattedResult(SULPHUR_RESULT, newS)
+        textViewAsh.text = if (type == CalculationType.DRY) {
+            formattedResult(ASH_RESULT, a * k)
+        } else {
+            ""
+        }
+    }
+
+    private fun calculateLowestHeat() {
+        val h = editTextHydrogen.getDouble()
+        val o = editTextOxygen.getDouble()
+        val c = editTextCarbon.getDouble()
+        val s = editTextSulphur.getDouble()
+        val w = editTextWetness.getDouble()
+        val a = editTextAsh.getDouble()
+
+        val lowestHeatWorking = calculateLowestHeatForWorkingMass(c, h, o, s, w)
+        val lowestHeatDry =
+            (lowestHeatWorking + WETNESS_MULTIPLIER_FOR_HEAT * w) * calculateDryCoefficient(w)
+        val lowestHeatFlammable =
+            (lowestHeatWorking + WETNESS_MULTIPLIER_FOR_HEAT * w) *
+                    calculateFlammableCoefficient(w, a)
+
+        textViewResultLowHeatWorking.text =
+            String.format(
+                Locale.getDefault(),
+                LOWEST_HEAT_WORKING_RESULT_TEMPLATE,
+                convertKilosToMega(lowestHeatWorking)
+            )
+        textViewResultLowHeatDry.text =
+            String.format(
+                Locale.getDefault(),
+                LOWEST_HEAT_DRY_RESULT_TEMPLATE,
+                convertKilosToMega(lowestHeatDry)
+            )
+        textViewResultLowHeatFlammable.text =
+            String.format(
+                Locale.getDefault(),
+                LOWEST_HEAT_FLAMMABLE_RESULT_TEMPLATE,
+                convertKilosToMega(lowestHeatFlammable)
+            )
+
+    }
+
+    private fun EditText.getDouble(): Double = text.toString().trim().toDoubleOrNull() ?: 0.0
+
+    private fun calculateDryCoefficient(wetness: Double): Double = 100 / (100 - wetness)
 
     private fun calculateFlammableCoefficient(wetness: Double, ash: Double): Double =
         100 / (100 - wetness - ash)
@@ -164,8 +171,11 @@ class FirstTaskCalculatorActivity : AppCompatActivity() {
 
     private fun convertKilosToMega(value: Double): Double = value / KILOS_IN_MEGA
 
+    private fun formattedResult(label: String, value: Double): String =
+        String.format(Locale.getDefault(), RESULT_TEMPLATE, label, value)
+
     companion object {
-        const val RESULT_TEMPLATE = "%s %.3f"
+        const val RESULT_TEMPLATE = "%s %.4f"
 
         const val HYDROGEN_RESULT = "H, %:"
         const val OXYGEN_RESULT = "O, %:"
@@ -183,8 +193,8 @@ class FirstTaskCalculatorActivity : AppCompatActivity() {
 
         const val KILOS_IN_MEGA: Double = 1000.0
 
-        const val LOWEST_HEAT_WORKING_RESULT_TEMPLATE = "Робочої маси, кДж/кг: %.3f"
-        const val LOWEST_HEAT_DRY_RESULT_TEMPLATE = "Сухої маси, кДж/кг: %.3f"
-        const val LOWEST_HEAT_FLAMMABLE_RESULT_TEMPLATE = "Горючої маси, кДж/кг: %.3f"
+        const val LOWEST_HEAT_WORKING_RESULT_TEMPLATE = "Робочої маси, кДж/кг: %.4f"
+        const val LOWEST_HEAT_DRY_RESULT_TEMPLATE = "Сухої маси, кДж/кг: %.4f"
+        const val LOWEST_HEAT_FLAMMABLE_RESULT_TEMPLATE = "Горючої маси, кДж/кг: %.4f"
     }
 }
